@@ -34,7 +34,6 @@ app.post("/dashboard", async (req, res) => {
     }
 
     res.cookie("user", person._id);
-    const data = { stocks: person.stocks };
     res.render("dashboard", data);
 });
 
@@ -48,7 +47,6 @@ app.post("/processCreate", async (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
-        stocks: [],
     }
 
     await client.connect()
@@ -56,36 +54,31 @@ app.post("/processCreate", async (req, res) => {
     const result = (await db.collection(`${process.env.MONGO_DB_COLLECTION}`).insertOne(data)).insertedId;
 
     res.cookie('user', result);
-
-    res.redirect("/addStock");
-});
-
-app.get("/addStock", (req, res) => {
-    res.render("addStock");
+    res.render("dashboard", {User: result.toString()})
 });
 
 
-app.get("/:stock", (req, res) => {
-    const apiString = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${req.params.stock}&apikey=${process.env.API_KEY}`
-    let news = [];
+// app.get("/:stock", (req, res) => {
+//     const apiString = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${req.params.stock}&apikey=${process.env.API_KEY}`
+//     let news = [];
 
-    axios(apiString)
-    .then(response => response.data)
-    .then(data => {
-        console.log(data);
-        // data.feed.foreach(element => {
-        //     news.insert({ title: element.title, url: element.url, summary: element.summary });
-        // });
-    })
+//     axios(apiString)
+//     .then(response => response.data)
+//     .then(data => {
+//         console.log(data);
+//         // data.feed.foreach(element => {
+//         //     news.insert({ title: element.title, url: element.url, summary: element.summary });
+//         // });
+//     })
 
 
-    const data = {
-        stock: req.params.stock,
-        chart: "temp",
-        news: news
-    }
+//     const data = {
+//         stock: req.params.stock,
+//         chart: "temp",
+//         news: news
+//     }
 
-    res.render("stock", data);
-});
+//     res.render("stock", data);
+// });
 
 process.stdout.write("Web server is running at http://localhost:5000\n")
