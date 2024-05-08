@@ -6,11 +6,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    h1 {
+      display: flex;
+      justify-content: center;
+    }
+
+    label {
+      padding-right: 5px;
+    }
+
+    body {
+      background-color: bisque;
+    }
+
+    table {
+      background-color: white;
+    }
+
+    button:hover {
+      color: red;
+    }
+  </style>
 </head>
 
 <body>
-  <%=User%>
+  <h1>Welcome <%-user%>
+  </h1>
+  <div id="table">
+    <%-favoriteBooklst%>
+  </div>
+  <div>
+    <form action="/search" method="post">
+      <label for="title">Enter a book title to search</label>
+      <input type="text" name="title">
+      <button type="submit">Search Books</button>
+    </form>
+    <form action="/logout" method="post">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
 </body>
 
 </html>
