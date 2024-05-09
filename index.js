@@ -15,7 +15,7 @@ app.listen(5000);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-let connectionUrl = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@cluster0.zdvn84l.mongodb.net/?retryWrites=true&w=majority`;
+let connectionUrl = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASS}@cluster0.zdvn84l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 const client = new MongoClient(connectionUrl);
 
 app.get("/", (req, res) => {
@@ -47,8 +47,9 @@ app.post("/dashboard", async (req, res) => {
 
 
         res.cookie("user", person._id);
-        res.render("dashboard", { favoriteBooklst: table, user: person.name});
+        res.render("dashboard", { favoriteBooklst: table, user: person.name });
     } catch (error) {
+        console.log(error);
         res.redirect("/?loginFailed=true");
     }
 });
@@ -74,7 +75,7 @@ app.get("/dashboard", async (req, res) => {
                 </tbody
             </table>`;
 
-    res.render("dashboard", { favoriteBooklst: table, user: person.name});
+    res.render("dashboard", { favoriteBooklst: table, user: person.name });
 });
 
 app.get("/createAccount", (req, res) => {
