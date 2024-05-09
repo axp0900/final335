@@ -49,7 +49,6 @@ app.post("/dashboard", async (req, res) => {
         res.cookie("user", person._id);
         res.render("dashboard", { favoriteBooklst: table, user: person.name });
     } catch (error) {
-        console.log(error);
         res.redirect("/?loginFailed=true");
     }
 });
@@ -102,8 +101,7 @@ app.post("/processCreate", async (req, res) => {
 
 app.post("/search", async (req, res) => {
     const apiString = `https://www.googleapis.com/books/v1/volumes?q=intitle:${req.body.title}&key=${process.env.API_KEY}`;
-    let content = `<form action="/addBooks" method="post"> <fieldset>
-    <legend>After Selecting books, scroll to bottom to add to favorites</legend>`;
+    let content = `<form action="/addBooks" method="post"> <fieldset>`;
     axios(apiString)
         .then(response => {
             response.data.items.forEach((book) => {
@@ -147,7 +145,7 @@ app.post("/addBooks", async (req, res) => {
             );
         } else {
             const response = await axios(`https://www.googleapis.com/books/v1/volumes/${req.body.id}`);
-            newBooks.push(`${response.data.volumeInfo.title}`);
+            newBooks.push(JSON.stringify({ title: `${response.data.volumeInfo.title}`, url: response.data.volumeInfo.imageLinks.thumbnail }));
             await db.collection(`${process.env.MONGO_DB_COLLECTION}`).updateOne(
                 { _id: new ObjectId(`${req.cookies.user}`) },
                 { $set: { books: newBooks } }
