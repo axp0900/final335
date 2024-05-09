@@ -27,24 +27,40 @@
     button:hover {
       color: red;
     }
+
+    #logout{
+      margin-left: 15px;
+    }
+
+    #forms{
+      margin-top:20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    #table{
+      margin-top:20px;
+      display: flex;
+      justify-content: center;
+      text-align: center;
+    }
   </style>
 </head>
 
 <body>
-  <h1>Welcome <%-user%>
-  </h1>
-  <div id="table">
-    <%-favoriteBooklst%>
-  </div>
-  <div>
+  <h1>Welcome <%-user%></h1>
+  <div id ="forms">
     <form action="/search" method="post">
       <label for="title">Enter a book title to search</label>
       <input type="text" name="title">
       <button type="submit">Search Books</button>
     </form>
-    <form action="/logout" method="post">
+    <form action="/logout" method="post" id="logout">
       <button type="submit">Logout</button>
     </form>
+  </div>
+  <div id="table">
+    <%-favoriteBooklst%>
   </div>
 </body>
 
